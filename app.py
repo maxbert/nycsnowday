@@ -6,9 +6,9 @@ f = owm.three_hours_forecast('nyc')
 time = pyowm.timeutils.tomorrow()
 f = f.get_weather_at(time)
 s = f.get_snow()
-s = {'all':300}
 chance = 60
-message = ""
+time2 = pyowm.timeutils.now()
+message = str(time2) + ": "
 def chan(c):
     chance = 0
     if c > 267:
@@ -32,16 +32,16 @@ def chan(c):
 
 if( 'all' not in s.keys() and '1h' not in s.keys() and '3h' not in s.keys()):
     chance = 5
-    message = "no snow expected tomorrow"
+    message += "no snow expected tomorrow"
 elif ('all' in s.keys()):
     chance = chan(s['all'])['c']
-    message = chan(s['all'])['m']
+    message += chan(s['all'])['m']
 elif ('3h' in s.keys()):
     chance = chan(s['3h'])['c']
-    message = chan(s['3h'])['m']
+    message += chan(s['3h'])['m']
 elif ('1h' in s.keys()):
     chance = chan(s['1h'])['c']
-    message = chan(s['1h'])['m']
+    message += chan(s['1h'])['m']
 
 app = Flask(__name__)
 @app.route("/")
