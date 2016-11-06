@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for,redirect,session
 import pyowm
 from time import strftime
 from pytz import timezone
+app = Flask(__name__)
 tz = timezone('EST')
 owm = pyowm.OWM('ceb7be6f8da5256b6ec3ef530031eefd')
 f = owm.three_hours_forecast('nyc')
@@ -9,7 +10,7 @@ time = pyowm.timeutils.tomorrow()
 f = f.get_weather_at(time)
 s = f.get_snow()
 chance = 60
-time2 = strftime("%A %B-%d %H:%M ")
+time2 = strftime("%A %B %d")
 message = str(time2) + ": "
 def chan(c):
     chance = 0
@@ -45,7 +46,6 @@ elif ('1h' in s.keys()):
     chance = chan(s['1h'])['c']
     message += chan(s['1h'])['m']
 
-app = Flask(__name__)
 @app.route("/home/")
 def home():
     return render_template('home.html')
@@ -54,4 +54,5 @@ def calc():
     return render_template('calc.html', cnce = chance, messg = message)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug = True)
+	

@@ -1,6 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<style>
+#myProgress {
+ position: relative;
+ width: 100%;
+ height: 30px;
+ background-color: #ddd;
+}
+
+
+#myBar {
+ position: absolute;
+ width: 0%;
+ height: 100%;
+ background-color: #7ec0ee;
+}
+
+
+#label {
+ text-align: center;
+ line-height: 30px;
+ color: white;
+}
+</style>
+
 <head>
 
     <meta charset="utf-8">
@@ -12,13 +37,13 @@
     <title>Freelancer - Start Bootstrap Theme</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/freelancer.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/freelancer.min.css') }}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
@@ -74,7 +99,49 @@
                     <div class="intro-text">
                         <span class="name">CALCULATE</span>
                         <hr class="star-light">
-                        <span class="skills"> DATE AND CALCULATE BAR HERE</span>
+                        <span class="skills"> 
+
+
+<div id = "story" style="display:none;" class="answer_list">
+<div id="myProgress">
+ <div id="myBar">
+   <div id="label"></div>
+ </div>
+</div>
+
+
+
+{{messg}}
+
+
+
+</div>
+<br>
+<button class="btn btn-default" onclick="move();showDiv()">Calculate!</button>
+
+
+
+<script>
+function move() {
+ var elem = document.getElementById("myBar");
+ var width = 1;
+ var id = setInterval(frame, 45);
+ function frame() {
+   if (width >= {{cnce}}) {
+     clearInterval(id);
+   } else {
+     width++;
+     elem.style.width = width + '%'
+     document.getElementById("label").innerHTML = width * 1  + '%';
+   }
+ }
+}
+function showDiv() {
+  document.getElementById("story").style.display = "block";
+}
+</script>
+
+</span>
                     </div>
                 </div>
             </div>
