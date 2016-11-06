@@ -24,6 +24,19 @@
  line-height: 30px;
  color: white;
 }
+
+#calcButton {
+    background-color: #00c1b4;
+    border: none;
+    color: white;
+    padding: 50px 50px;
+    text-align: center;
+    text-decoration: Bold;
+    display: inline-block;
+    font-size: 25px;
+    margin: 0px 0px;
+    cursor: pointer;
+}
 </style>
 
 <head>
@@ -34,8 +47,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Freelancer - Start Bootstrap Theme</title>
-
+    <title>Nycsnowday</title>
+    <link rel='shortcut icon' href="{{url_for('static', filename = 'favicon.ico') }}" type='image/x-icon'/ >
     <!-- Bootstrap Core CSS -->
     <link href="{{url_for('static', filename = 'vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -117,7 +130,7 @@
 
 </div>
 <br>
-<button class="btn btn-default" onclick="move();showDiv()">Calculate!</button>
+<button id="calcButton" onclick="move();showDiv()">Calculate!</button>
 
 
 

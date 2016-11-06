@@ -10,7 +10,7 @@ time = pyowm.timeutils.tomorrow()
 f = f.get_weather_at(time)
 s = f.get_snow()
 chance = 60
-time2 = strftime("%A %B %d")
+time2 = time.strftime("%A %B %d")
 message = str(time2) + ": "
 def chan(c):
     chance = 0
