@@ -10,19 +10,20 @@ def chance():
     time1 = pyowm.timeutils.tomorrow()
     f = f.get_weather_at(time1)
     s = f.get_snow()
-    time3 = pyowm.timeutils.now()
     f2 = owm.weather_at_place('nyc')
     f2 = f2.get_weather()
-    s2 = f.get_snow()
-    f3 = owm.daily_forecast('nyc')
-    f3 = f3.get_weather_at(time3)
-    s3 = f3.get_snow()
+    s3 = f.get_snow()
     chance = 60
     time.timezone =tz
     time2 = time.strftime("%A %B %d")
     message = str(time2) + ": "
     addchance = 0
-    
+    print("snow tommorow - ")
+    print(s)
+    print("current conditions")
+    print(f2)
+    print("snow today")
+    print(s3)
     if( f2.get_status() == "Snow"):
         addchance = 15
         message += "It is snowing right now and "
