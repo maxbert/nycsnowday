@@ -1,9 +1,26 @@
 from flask import Flask, render_template, request, url_for,redirect,session
 import pyowm
-import time
+import time, urllib2, json, random
 from pytz import timezone
 app = Flask(__name__)
+print('hello')
 def chance():
+    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/forecast/q/NY/nyc.json')
+    json_string = f.read()
+    parsed_json = json.loads(json_string)
+    snowtoday = parsed_json['forecast']['simpleforecast']['forecastday'][0]['snow_allday']['in']
+    snowtomorrow = parsed_json['forecast']['simpleforecast']['forecastday'][1]['snow_allday']['in']
+    f.close()
+    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/geolookup/conditions/q/IA/Cedar_Rapids.json')
+    json_string = f.read()
+    parsed_json = json.loads(json_string)
+    snowing = parsed_json['current_observation']['weather']
+    currsnow = False
+    if snowing=="Snow":
+        currsnow = True
+    else:
+        currsnow = False
+        
     tz = timezone('EST')
     owm = pyowm.OWM('ceb7be6f8da5256b6ec3ef530031eefd')
     f = owm.daily_forecast('nyc')
@@ -14,6 +31,7 @@ def chance():
     f2 = f2.get_weather()
     s3 = f.get_snow()
     chance = 60
+    rand = random.randint(0,5)
     time.timezone =tz
     time2 = time.strftime("%A %B %d")
     message = str(time2) + ": "
@@ -24,24 +42,14 @@ def chance():
     print(f2)
     print("snow today")
     print(s3)
-    if( f2.get_status() == "Snow"):
+    if( currsnow == True):
         addchance = 15
         message += "It is snowing right now and "
-        
-    if('all' in s.keys() and 'all' in s3.keys()):
-        chance = chan((s['all'] + s3['all']))['c'] + addchance
-        message += chan((s['all'] + s3['all']))['m']
-        return {'c':chance,'m':message}
-    elif('all' in s.keys()):
-        chance = chan(s['all'] )['c'] + addchance
-        message += chan(s['all'] )['m']
-        return {'c':chance,'m':message}
-    elif('all' in s3.keys()):
-        chance = chan(s3['all'])['c'] + addchance
-        message += chan(s['all'] )['m']
-        return {'c':chance,'m':message}
+    if(snowtoday + snowtomorrow > 0):
+        chance = chan(c * 25.4)['c'] + addchance + rand
+        message = chan(c * 25.4)['m']
     else:
-        chance = 5 +addchance
+        chance = rand +addchance
         message += "no snow accumulation expected tomorrow"
         return {'c':chance,'m':message}
 def chan(c):
@@ -74,5 +82,5 @@ def calc():
     return render_template('calc.html', cnce = chance()['c'], messg = chance()['m'])
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug = True)
+    app.run(host = "0.0.0.0", debug = True)
 	
