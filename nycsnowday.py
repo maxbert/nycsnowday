@@ -5,6 +5,9 @@ from pytz import timezone
 app = Flask(__name__)
 print('hello')
 def chance():
+    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/history_20170107/q/NY/nyc.json')
+    j = json.loads(f.read())
+    snowalready = j['history']['dailysummary'][0]['snowfalli']
     f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/forecast/q/NY/nyc.json')
     json_string = f.read()
     parsed_json = json.loads(json_string)
@@ -36,7 +39,7 @@ def chance():
     time2 = time.strftime("%A %B %d")
     message = str(time2) + ": "
     addchance = 0
-    c = snowtoday + snowtomorrow
+    c = snowtoday + snowtomorrow + snowalready
     print("snow tommorow - ")
     print(s)
     print("current conditions")
@@ -46,7 +49,7 @@ def chance():
     if( currsnow == True):
         addchance = 15
         message += "It is snowing right now and "
-    if(snowtoday + snowtomorrow > 0):
+    if(snowtoday + snowtomorrow + snowalready > 0):
         chance = chan(c * 25.4)['c'] + addchance + rand
         message = chan(c * 25.4)['m']
     else:
