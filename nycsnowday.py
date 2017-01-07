@@ -36,6 +36,7 @@ def chance():
     time2 = time.strftime("%A %B %d")
     message = str(time2) + ": "
     addchance = 0
+    c = snowtoday + snowtomorrow
     print("snow tommorow - ")
     print(s)
     print("current conditions")
@@ -51,23 +52,23 @@ def chance():
     else:
         chance = rand +addchance
         message += "no snow accumulation expected tomorrow"
-        return {'c':chance,'m':message}
+    return {'c':chance,'m':message}
 def chan(c):
     if c > 267:
         chance = 99
-        message = "more than a foot of snow accumulation( " + c +" mm) expected by tommorow"
+        message = "more than a foot of snow accumulation( " + str(c) +" mm) expected by tommorow"
     elif c > 200:
         chance = 80
-        message = "almost a foot of snow accumulation ( " + c +" mm) expected by tommorow"
+        message = "almost a foot of snow accumulation ( " + str(c) +" mm) expected by tommorow"
     elif c > 150:
         chance = 65
-        message = "half a foot of snow accumulation ( " + c +" mm) expected by tommorow"
+        message = "half a foot of snow accumulation ( " + str(c) +" mm) expected by tommorow"
     elif c > 75:
         chance = 54
-        message = "a decent amount of snow accumulation ( " + c +" mm) expected by tommorow"
+        message = "a decent amount of snow accumulation ( " + str(c) +" mm) expected by tommorow"
     elif c > 20:
         chance = 15
-        message = "some snow accumulation( " + c +" mm) but not enough is expected by tommorow"
+        message = "some snow accumulation( " + str(c) +" mm) but not enough is expected by tommorow"
     else:
         chance = 10
         message = "less than an inch of accumulation is expected by tommorow"
