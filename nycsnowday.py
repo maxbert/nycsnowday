@@ -8,7 +8,8 @@ def chance():
     tz = timezone('EST')
     time.timezone =tz
     t = time.strftime('%Y%m%d')
-    print t
+    tj = time.strftime('%H%M')
+    print tj
     f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
     snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
@@ -55,7 +56,7 @@ def chance():
         message += "It is snowing right now and "
     if(snowtoday + snowtomorrow + snowalready > 0):
         chance = chan(c * 25.4)['c'] + addchance + rand
-        message = chan(c * 25.4)['m']
+        message = tj + chan(c * 25.4)['m']
     else:
         chance = rand +addchance
         message += "no snow accumulation expected tomorrow"
@@ -63,22 +64,22 @@ def chance():
 def chan(c):
     if c > 267:
         chance = 99
-        message = "more than a foot of snow accumulation( " + str(c) +" mm) expected by tommorow"
+        message = "more than a foot of snow accumulation( " + str(c / 25.4) +" in) expected by tommorow"
     elif c > 200:
         chance = 80
-        message = "almost a foot of snow accumulation ( " + str(c) +" mm) expected by tommorow"
+        message = "almost a foot of snow accumulation ( " + str(c / 25.4) +" in) expected by tommorow"
     elif c > 150:
         chance = 65
-        message = "half a foot of snow accumulation ( " + str(c) +" mm) expected by tommorow"
+        message = "half a foot of snow accumulation ( " + str(c / 25.4) +" in) expected by tommorow"
     elif c > 75:
         chance = 54
-        message = "a decent amount of snow accumulation ( " + str(c) +" mm) expected by tommorow"
-    elif c > 20:
+        message = "A decent amount of snow accumulation ( " + str(c / 25.4) +" in) expected by tommorow"
+    elif c > 25.4:
         chance = 15
-        message = "some snow accumulation( " + str(c) +" mm) but not enough is expected by tommorow"
+        message = "Some snow accumulation( " + str(c / 25.4) +" in) but not enough is expected by tommorow"
     else:
         chance = 10
-        message = "less than an inch of accumulation is expected by tommorow"
+        message = "Less than an inch of accumulation is expected by tommorow"
     return {'c':chance,'m':message}
 
 @app.route("/home/")
