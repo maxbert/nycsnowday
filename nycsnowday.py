@@ -14,8 +14,8 @@ def chance():
     key3 = '7e093a11e58f2fce'
     key4 = 'b3e69313dedbe821'
     key5 = 'dbdf167060b3fc73'
-    a = random.randint(1,3)
-    b = random.randint(1,3)
+    a = random.randint(1,4)
+    b = random.randint(1,4)
     if (a == 1):
         keya = key1
     if (a == 2):
@@ -32,10 +32,17 @@ def chance():
         keyb = key3
     if(b ==4):
         keyb = key4
-
+    print keya
+    print keyb
     f = urllib2.urlopen('http://api.wunderground.com/api/' + keya + '/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
-    snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
+    snowalready = 0
+    if (len(j['history']['dailysummary']) == 0):
+        snowalready = 0
+    elif (not(snowalready == '')):
+        snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
+    else:
+        snowalready = 0
     f = urllib2.urlopen('http://api.wunderground.com/api/' + keyb + '/forecast/q/NY/nyc.json')
     json_string = f.read()
     parsed_json = json.loads(json_string)
@@ -77,7 +84,7 @@ def chance():
         chance = chan(c * 25.4)['c'] + addchance + rand
         message += chan(c * 25.4)['m']
     else:
-        chance = rand +addchance
+        chance = rand + 2 + addchance
         message += "no snow accumulation expected tomorrow"
     return {'c':chance,'m':message}
 def chan(c):
