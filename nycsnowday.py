@@ -9,19 +9,39 @@ def chance():
     timer = datetime.now(timezone('US/Eastern'))
     t = timer.strftime('%Y%m%d')
     print t
-    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/history_' + t + '/q/NY/nyc.json')
+    key1 = '01c3a565d8bfd31d'
+    key2 = '70c45a24ed3df2db'
+    key3 = '7e093a11e58f2fce'
+    key4 = 'b3e69313dedbe821'
+    key5 = 'dbdf167060b3fc73'
+    a = random.randint(1,3)
+    b = random.randint(1,3)
+    if (a == 1):
+        keya = key1
+    if (a == 2):
+        keya = key2
+    if (a == 3):
+        keya = key3
+    if (a ==4 ):
+        keya = key4
+    if(b == 1):
+        keyb = key1
+    if(b == 2):
+        keyb = key2
+    if(b ==3):
+        keyb = key3
+    if(b ==4):
+        keyb = key4
+
+    f = urllib2.urlopen('http://api.wunderground.com/api/' + keya + '/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
     snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
-    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/forecast/q/NY/nyc.json')
+    f = urllib2.urlopen('http://api.wunderground.com/api/' + keyb + '/forecast/q/NY/nyc.json')
     json_string = f.read()
     parsed_json = json.loads(json_string)
     snowtoday = parsed_json['forecast']['simpleforecast']['forecastday'][0]['snow_allday']['in']
     snowtomorrow = parsed_json['forecast']['simpleforecast']['forecastday'][1]['snow_allday']['in']
     f.close()
-    f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/geolookup/conditions/q/IA/Cedar_Rapids.json')
-    json_string = f.read()
-    parsed_json = json.loads(json_string)
-    snowing = parsed_json['current_observation']['weather']
     currsnow = False        
     tz = timezone('EST')
     owm = pyowm.OWM('ceb7be6f8da5256b6ec3ef530031eefd')
