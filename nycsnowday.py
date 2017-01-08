@@ -1,13 +1,14 @@
 from flask import Flask, render_template, request, url_for,redirect,session
+from datetime import datetime
 import pyowm
 import time, urllib2, json, random
 from pytz import timezone
 app = Flask(__name__)
 print('hello')
 def chance():
-    tz = timezone('EST')
-    time.timezone =tz
-    t = time.strftime('%Y%m%d')
+    timer = datetime.now(timezone('US/Eastern'))
+    t = timer.strftime('%Y%m%d')
+    print t
     f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
     snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
@@ -21,12 +22,7 @@ def chance():
     json_string = f.read()
     parsed_json = json.loads(json_string)
     snowing = parsed_json['current_observation']['weather']
-    currsnow = False
-    if snowing=="Snow":
-        currsnow = True
-    else:
-        currsnow = False
-        
+    currsnow = False        
     tz = timezone('EST')
     owm = pyowm.OWM('ceb7be6f8da5256b6ec3ef530031eefd')
     f = owm.daily_forecast('nyc')
@@ -39,9 +35,14 @@ def chance():
     chance = 60
     rand = random.randint(0,5)
     time.timezone =tz
-    time2 = time.strftime("%A %B %d")
+    time2 = timer.strftime("%A %B %d")
     message = str(time2) + ": "
     addchance = 0
+    if(f2.get_status() == "Snow"):
+        currsnow = True
+    else:
+        currsnow = False
+
     c = snowtoday + snowtomorrow + snowalready
     print("snow tommorow - ")
     print(s)
@@ -54,7 +55,7 @@ def chance():
         message += "It is snowing right now and "
     if(snowtoday + snowtomorrow + snowalready > 0):
         chance = chan(c * 25.4)['c'] + addchance + rand
-        message = chan(c * 25.4)['m']
+        message += chan(c * 25.4)['m']
     else:
         chance = rand +addchance
         message += "no snow accumulation expected tomorrow"
