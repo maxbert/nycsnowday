@@ -8,8 +8,6 @@ def chance():
     tz = timezone('EST')
     time.timezone =tz
     t = time.strftime('%Y%m%d')
-    tj = time.strftime('%H%M')
-    print tj
     f = urllib2.urlopen('http://api.wunderground.com/api/dbdf167060b3fc73/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
     snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
@@ -56,7 +54,7 @@ def chance():
         message += "It is snowing right now and "
     if(snowtoday + snowtomorrow + snowalready > 0):
         chance = chan(c * 25.4)['c'] + addchance + rand
-        message = tj + chan(c * 25.4)['m']
+        message = chan(c * 25.4)['m']
     else:
         chance = rand +addchance
         message += "no snow accumulation expected tomorrow"
