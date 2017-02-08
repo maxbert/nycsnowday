@@ -37,28 +37,39 @@ def chance():
     f = urllib2.urlopen('http://api.wunderground.com/api/' + keya + '/history_' + t + '/q/NY/nyc.json')
     j = json.loads(f.read())
     snowalready = 0
-    if (len(j['history']['dailysummary']) == 0):
+    print j.keys()
+    if(('history' in j.keys())):
         snowalready = 0
-    elif (not(snowalready == '')):
-        snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
+    elif (len(j['history']['dailysummary']) == 0):
+        snowalready = 0
+    elif (snowalready != ''):
+        try:
+            snowalready = float(j['history']['dailysummary'][0]['snowfalli'])
+        except ValueError:
+            snowalready = 0
     else:
         snowalready = 0
+    print 'error'
     f = urllib2.urlopen('http://api.wunderground.com/api/' + keyb + '/forecast/q/NY/nyc.json')
+    print 'error2'
     json_string = f.read()
     parsed_json = json.loads(json_string)
     snowtoday = parsed_json['forecast']['simpleforecast']['forecastday'][0]['snow_allday']['in']
     snowtomorrow = parsed_json['forecast']['simpleforecast']['forecastday'][1]['snow_allday']['in']
     f.close()
-    currsnow = False        
+    currsnow = False
+    print 'error3'
     tz = timezone('EST')
     owm = pyowm.OWM('ceb7be6f8da5256b6ec3ef530031eefd')
-    f = owm.daily_forecast('nyc')
-    time1 = pyowm.timeutils.tomorrow()
-    f = f.get_weather_at(time1)
-    s = f.get_snow()
+    print 'error3.1'
+    #f = owm.daily_forecast('nyc')
+    #time1 = pyowm.timeutils.tomorrow()
+    #f = f.get_weather_at(time1)
+    #s = f.get_snow()
+    print 'error3.2'
     f2 = owm.weather_at_place('nyc')
     f2 = f2.get_weather()
-    s3 = f.get_snow()
+    #s3 = f.get_snow()
     chance = 60
     rand = random.randint(0,5)
     time.timezone =tz
@@ -69,14 +80,14 @@ def chance():
         currsnow = True
     else:
         currsnow = False
-
+    print 'error 4'
     c = snowtoday + snowtomorrow + snowalready
     print("snow tommorow - ")
-    print(s)
+    #print(s)
     print("current conditions")
     print(f2)
     print("snow today")
-    print(s3)
+    #print(s3)
     if( currsnow == True):
         addchance = 15
         message += "It is snowing right now and "
@@ -85,7 +96,8 @@ def chance():
         message += chan(c * 25.4)['m']
     else:
         chance = rand + 2 + addchance
-        message += "no snow accumulation expected tomorrow"
+        message += "no snow accumulation expected by tomorrow"
+    print 'error 5'
     return {'c':chance,'m':message}
 def chan(c):
     if c > 267:
